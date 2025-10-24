@@ -1,0 +1,1161 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@electron/get": {
+      "name": "@electron/get",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "got"
+      ],
+      "effects": [
+        "electron"
+      ],
+      "range": "<=1.14.1",
+      "nodes": [
+        "node_modules/@electron/get"
+      ],
+      "fixAvailable": {
+        "name": "electron",
+        "version": "38.4.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@electron/universal": {
+      "name": "@electron/universal",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "dir-compare"
+      ],
+      "effects": [
+        "app-builder-lib"
+      ],
+      "range": "1.0.1 - 1.3.3",
+      "nodes": [
+        "node_modules/@electron/universal"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "ansi-regex": {
+      "name": "ansi-regex",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1094090,
+          "name": "ansi-regex",
+          "dependency": "ansi-regex",
+          "title": "Inefficient Regular Expression Complexity in chalk/ansi-regex",
+          "url": "https://github.com/advisories/GHSA-93q8-gq69-wqmw",
+          "severity": "high",
+          "cwe": [
+            "CWE-697",
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=3.0.0 <3.0.1"
+        }
+      ],
+      "effects": [],
+      "range": "3.0.0",
+      "nodes": [
+        "node_modules/ansi-regex"
+      ],
+      "fixAvailable": true
+    },
+    "app-builder-lib": {
+      "name": "app-builder-lib",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@electron/universal",
+        {
+          "source": 1096698,
+          "name": "app-builder-lib",
+          "dependency": "app-builder-lib",
+          "title": "electron-builder's NSIS installer - execute arbitrary code on the target machine (Windows only)",
+          "url": "https://github.com/advisories/GHSA-r4pf-3v7r-hh55",
+          "severity": "high",
+          "cwe": [
+            "CWE-426",
+            "CWE-427"
+          ],
+          "cvss": {
+            "score": 7.3,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H"
+          },
+          "range": "<24.13.2"
+        }
+      ],
+      "effects": [
+        "dmg-builder",
+        "electron-builder"
+      ],
+      "range": "<=24.13.1",
+      "nodes": [
+        "node_modules/app-builder-lib"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "brace-expansion": {
+      "name": "brace-expansion",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1105443,
+          "name": "brace-expansion",
+          "dependency": "brace-expansion",
+          "title": "brace-expansion Regular Expression Denial of Service vulnerability",
+          "url": "https://github.com/advisories/GHSA-v6h2-p8h4-qcjw",
+          "severity": "low",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 3.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": ">=1.0.0 <=1.1.11"
+        }
+      ],
+      "effects": [],
+      "range": "1.0.0 - 1.1.11",
+      "nodes": [
+        "node_modules/brace-expansion"
+      ],
+      "fixAvailable": true
+    },
+    "cross-spawn": {
+      "name": "cross-spawn",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1104664,
+          "name": "cross-spawn",
+          "dependency": "cross-spawn",
+          "title": "Regular Expression Denial of Service (ReDoS) in cross-spawn",
+          "url": "https://github.com/advisories/GHSA-3xgq-45jj-v275",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=7.0.0 <7.0.5"
+        }
+      ],
+      "effects": [],
+      "range": "7.0.0 - 7.0.4",
+      "nodes": [
+        "node_modules/cross-spawn"
+      ],
+      "fixAvailable": true
+    },
+    "dir-compare": {
+      "name": "dir-compare",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "@electron/universal"
+      ],
+      "range": "<=2.4.0",
+      "nodes": [
+        "node_modules/dir-compare"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "dmg-builder": {
+      "name": "dmg-builder",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "app-builder-lib"
+      ],
+      "effects": [
+        "electron-builder"
+      ],
+      "range": "5.0.0 - 24.13.1",
+      "nodes": [
+        "node_modules/dmg-builder"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "ejs": {
+      "name": "ejs",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1089270,
+          "name": "ejs",
+          "dependency": "ejs",
+          "title": "ejs template injection vulnerability",
+          "url": "https://github.com/advisories/GHSA-phwq-j96m-2c2q",
+          "severity": "critical",
+          "cwe": [
+            "CWE-74"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<3.1.7"
+        },
+        {
+          "source": 1098366,
+          "name": "ejs",
+          "dependency": "ejs",
+          "title": "ejs lacks certain pollution protection",
+          "url": "https://github.com/advisories/GHSA-ghr5-ch3p-vcr6",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-693",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 4,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<3.1.10"
+        }
+      ],
+      "effects": [],
+      "range": "<=3.1.9",
+      "nodes": [
+        "node_modules/ejs"
+      ],
+      "fixAvailable": true
+    },
+    "electron": {
+      "name": "electron",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@electron/get",
+        {
+          "source": 1088971,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "AutoUpdater module fails to validate certain nested components of the bundle",
+          "url": "https://github.com/advisories/GHSA-77xc-hjv8-ww97",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-20"
+          ],
+          "cvss": {
+            "score": 6.6,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<15.5.0"
+        },
+        {
+          "source": 1088975,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Compromised child renderer processes could obtain IPC access without nodeIntegrationInSubFrames being enabled",
+          "url": "https://github.com/advisories/GHSA-mq8j-3h7h-p8g7",
+          "severity": "low",
+          "cwe": [
+            "CWE-668"
+          ],
+          "cvss": {
+            "score": 2.2,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:L/I:N/A:N"
+          },
+          "range": "<15.5.5"
+        },
+        {
+          "source": 1089220,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Exfiltration of hashed SMB credentials on Windows via file:// redirect",
+          "url": "https://github.com/advisories/GHSA-p2jh-44qj-pf2v",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-200",
+            "CWE-522"
+          ],
+          "cvss": {
+            "score": 5.4,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:L"
+          },
+          "range": "<18.3.7"
+        },
+        {
+          "source": 1092662,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Renderers can obtain access to random bluetooth device without permission in Electron",
+          "url": "https://github.com/advisories/GHSA-3p22-ghq8-v749",
+          "severity": "low",
+          "cwe": [
+            "CWE-668",
+            "CWE-862"
+          ],
+          "cvss": {
+            "score": 3.4,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:N/A:N"
+          },
+          "range": "<13.6.6"
+        },
+        {
+          "source": 1094579,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Electron vulnerable to out-of-package code execution when launched with arbitrary cwd",
+          "url": "https://github.com/advisories/GHSA-7x97-j373-85x5",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-94"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:L/I:H/A:L"
+          },
+          "range": "<22.3.19"
+        },
+        {
+          "source": 1094583,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Electron context isolation bypass via nested unserializable return value",
+          "url": "https://github.com/advisories/GHSA-p7v2-p9m8-qqg7",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-754"
+          ],
+          "cvss": {
+            "score": 6,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:L/I:L/A:L"
+          },
+          "range": "<22.3.6"
+        },
+        {
+          "source": 1096494,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Electron affected by libvpx's heap buffer overflow in vp8 encoding",
+          "url": "https://github.com/advisories/GHSA-qqvq-6xgj-jw8g",
+          "severity": "high",
+          "cwe": [
+            "CWE-787"
+          ],
+          "cvss": {
+            "score": 8.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H"
+          },
+          "range": "<22.3.25"
+        },
+        {
+          "source": 1099657,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "ASAR Integrity bypass via filetype confusion in electron",
+          "url": "https://github.com/advisories/GHSA-7m48-wc93-9g85",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-345"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:L/I:H/A:L"
+          },
+          "range": "<22.3.24"
+        },
+        {
+          "source": 1105820,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Electron vulnerable to Heap Buffer Overflow in NativeImage",
+          "url": "https://github.com/advisories/GHSA-6r2x-8pq8-9489",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-122"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<28.3.2"
+        },
+        {
+          "source": 1107272,
+          "name": "electron",
+          "dependency": "electron",
+          "title": "Electron has ASAR Integrity Bypass via resource modification",
+          "url": "https://github.com/advisories/GHSA-vmqv-hx8q-j7mg",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-94",
+            "CWE-829"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:L/I:H/A:L"
+          },
+          "range": "<35.7.5"
+        }
+      ],
+      "effects": [],
+      "range": "<=35.7.4",
+      "nodes": [
+        "node_modules/electron"
+      ],
+      "fixAvailable": {
+        "name": "electron",
+        "version": "38.4.0",
+        "isSemVerMajor": true
+      }
+    },
+    "electron-builder": {
+      "name": "electron-builder",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "app-builder-lib",
+        "dmg-builder",
+        "update-notifier"
+      ],
+      "effects": [],
+      "range": "5.6.1 - 24.13.1",
+      "nodes": [
+        "node_modules/electron-builder"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "electron-rebuild": {
+      "name": "electron-rebuild",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "lzma-native",
+        "node-gyp"
+      ],
+      "effects": [],
+      "range": "1.5.0 - 2.3.5",
+      "nodes": [
+        "node_modules/electron-rebuild"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "form-data": {
+      "name": "form-data",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1106507,
+          "name": "form-data",
+          "dependency": "form-data",
+          "title": "form-data uses unsafe random function in form-data for choosing boundary",
+          "url": "https://github.com/advisories/GHSA-fjxv-7rqg-78g4",
+          "severity": "critical",
+          "cwe": [
+            "CWE-330"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=4.0.0 <4.0.4"
+        },
+        {
+          "source": 1106509,
+          "name": "form-data",
+          "dependency": "form-data",
+          "title": "form-data uses unsafe random function in form-data for choosing boundary",
+          "url": "https://github.com/advisories/GHSA-fjxv-7rqg-78g4",
+          "severity": "critical",
+          "cwe": [
+            "CWE-330"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<2.5.4"
+        }
+      ],
+      "effects": [
+        "request"
+      ],
+      "range": ">=4.0.0 <4.0.4 || <2.5.4",
+      "nodes": [
+        "node_modules/app-builder-lib/node_modules/form-data",
+        "node_modules/form-data"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "got": {
+      "name": "got",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1088948,
+          "name": "got",
+          "dependency": "got",
+          "title": "Got allows a redirect to a UNIX socket",
+          "url": "https://github.com/advisories/GHSA-pfrx-2q88-qq97",
+          "severity": "moderate",
+          "cwe": [],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": "<11.8.5"
+        }
+      ],
+      "effects": [
+        "@electron/get",
+        "package-json"
+      ],
+      "range": "<11.8.5",
+      "nodes": [
+        "node_modules/electron-rebuild/node_modules/got",
+        "node_modules/got"
+      ],
+      "fixAvailable": {
+        "name": "electron",
+        "version": "38.4.0",
+        "isSemVerMajor": true
+      }
+    },
+    "http-cache-semantics": {
+      "name": "http-cache-semantics",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1102456,
+          "name": "http-cache-semantics",
+          "dependency": "http-cache-semantics",
+          "title": "http-cache-semantics vulnerable to Regular Expression Denial of Service",
+          "url": "https://github.com/advisories/GHSA-rc47-6667-2j5j",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<4.1.1"
+        }
+      ],
+      "effects": [],
+      "range": "<4.1.1",
+      "nodes": [
+        "node_modules/http-cache-semantics"
+      ],
+      "fixAvailable": true
+    },
+    "json-schema": {
+      "name": "json-schema",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1101855,
+          "name": "json-schema",
+          "dependency": "json-schema",
+          "title": "json-schema is vulnerable to Prototype Pollution",
+          "url": "https://github.com/advisories/GHSA-896r-f27r-55mw",
+          "severity": "critical",
+          "cwe": [
+            "CWE-915",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<0.4.0"
+        }
+      ],
+      "effects": [
+        "jsprim"
+      ],
+      "range": "<0.4.0",
+      "nodes": [
+        "node_modules/json-schema"
+      ],
+      "fixAvailable": true
+    },
+    "json5": {
+      "name": "json5",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1096544,
+          "name": "json5",
+          "dependency": "json5",
+          "title": "Prototype Pollution in JSON5 via Parse Method",
+          "url": "https://github.com/advisories/GHSA-9c47-m6qq-7p4h",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 7.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:L/A:H"
+          },
+          "range": ">=2.0.0 <2.2.2"
+        }
+      ],
+      "effects": [],
+      "range": "2.0.0 - 2.2.1",
+      "nodes": [
+        "node_modules/json5"
+      ],
+      "fixAvailable": true
+    },
+    "jsprim": {
+      "name": "jsprim",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "json-schema"
+      ],
+      "effects": [],
+      "range": "0.3.0 - 1.4.1 || 2.0.0 - 2.0.1",
+      "nodes": [
+        "node_modules/jsprim"
+      ],
+      "fixAvailable": true
+    },
+    "latest-version": {
+      "name": "latest-version",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "package-json"
+      ],
+      "effects": [
+        "update-notifier"
+      ],
+      "range": "0.2.0 - 5.1.0",
+      "nodes": [
+        "node_modules/latest-version"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "lzma-native": {
+      "name": "lzma-native",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "node-pre-gyp"
+      ],
+      "effects": [
+        "electron-rebuild"
+      ],
+      "range": "1.0.1 - 6.0.1",
+      "nodes": [
+        "node_modules/lzma-native"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "minimatch": {
+      "name": "minimatch",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1096485,
+          "name": "minimatch",
+          "dependency": "minimatch",
+          "title": "minimatch ReDoS vulnerability",
+          "url": "https://github.com/advisories/GHSA-f8q6-p94x-37v3",
+          "severity": "high",
+          "cwe": [
+            "CWE-400",
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<3.0.5"
+        }
+      ],
+      "effects": [
+        "dir-compare"
+      ],
+      "range": "<3.0.5",
+      "nodes": [
+        "node_modules/minimatch"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "minimist": {
+      "name": "minimist",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1097678,
+          "name": "minimist",
+          "dependency": "minimist",
+          "title": "Prototype Pollution in minimist",
+          "url": "https://github.com/advisories/GHSA-xvch-5gv4-984h",
+          "severity": "critical",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=1.0.0 <1.2.6"
+        }
+      ],
+      "effects": [],
+      "range": "1.0.0 - 1.2.5",
+      "nodes": [
+        "node_modules/minimist"
+      ],
+      "fixAvailable": true
+    },
+    "node-gyp": {
+      "name": "node-gyp",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "request"
+      ],
+      "effects": [
+        "electron-rebuild"
+      ],
+      "range": "<=7.1.2",
+      "nodes": [
+        "node_modules/node-gyp"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "node-pre-gyp": {
+      "name": "node-pre-gyp",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "tar"
+      ],
+      "effects": [
+        "lzma-native"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/node-pre-gyp"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "package-json": {
+      "name": "package-json",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "got"
+      ],
+      "effects": [
+        "latest-version"
+      ],
+      "range": "<=6.5.0",
+      "nodes": [
+        "node_modules/package-json"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    },
+    "plist": {
+      "name": "plist",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1095138,
+          "name": "plist",
+          "dependency": "plist",
+          "title": "Prototype pollution in Plist before 3.0.5 can cause denial of service",
+          "url": "https://github.com/advisories/GHSA-4cpg-3vgw-4877",
+          "severity": "critical",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<3.0.5"
+        }
+      ],
+      "effects": [],
+      "range": "<3.0.5",
+      "nodes": [
+        "node_modules/plist"
+      ],
+      "fixAvailable": true
+    },
+    "qs": {
+      "name": "qs",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1104118,
+          "name": "qs",
+          "dependency": "qs",
+          "title": "qs vulnerable to Prototype Pollution",
+          "url": "https://github.com/advisories/GHSA-hrpp-h998-j3pp",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=6.5.0 <6.5.3"
+        }
+      ],
+      "effects": [],
+      "range": "6.5.0 - 6.5.2",
+      "nodes": [
+        "node_modules/qs"
+      ],
+      "fixAvailable": true
+    },
+    "request": {
+      "name": "request",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1096727,
+          "name": "request",
+          "dependency": "request",
+          "title": "Server-Side Request Forgery in Request",
+          "url": "https://github.com/advisories/GHSA-p8p7-x288-28g6",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+          },
+          "range": "<=2.88.2"
+        },
+        "form-data",
+        "tough-cookie"
+      ],
+      "effects": [
+        "node-gyp"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/request"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "semver": {
+      "name": "semver",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1101088,
+          "name": "semver",
+          "dependency": "semver",
+          "title": "semver vulnerable to Regular Expression Denial of Service",
+          "url": "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=7.0.0 <7.5.2"
+        },
+        {
+          "source": 1101089,
+          "name": "semver",
+          "dependency": "semver",
+          "title": "semver vulnerable to Regular Expression Denial of Service",
+          "url": "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<5.7.2"
+        },
+        {
+          "source": 1101090,
+          "name": "semver",
+          "dependency": "semver",
+          "title": "semver vulnerable to Regular Expression Denial of Service",
+          "url": "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=6.0.0 <6.3.1"
+        }
+      ],
+      "effects": [],
+      "range": "<=5.7.1 || 6.0.0 - 6.3.0 || 7.0.0 - 7.5.1",
+      "nodes": [
+        "node_modules/make-dir/node_modules/semver",
+        "node_modules/node-abi/node_modules/semver",
+        "node_modules/node-pre-gyp/node_modules/semver",
+        "node_modules/package-json/node_modules/semver",
+        "node_modules/semver",
+        "node_modules/semver-diff/node_modules/semver"
+      ],
+      "fixAvailable": true
+    },
+    "tar": {
+      "name": "tar",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1097493,
+          "name": "tar",
+          "dependency": "tar",
+          "title": "Denial of service while parsing a tar file due to lack of folders count validation",
+          "url": "https://github.com/advisories/GHSA-f5x3-32g6-xq36",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H"
+          },
+          "range": "<6.2.1"
+        }
+      ],
+      "effects": [
+        "node-pre-gyp"
+      ],
+      "range": "<6.2.1",
+      "nodes": [
+        "node_modules/node-pre-gyp/node_modules/tar",
+        "node_modules/tar"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "terser": {
+      "name": "terser",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1091690,
+          "name": "terser",
+          "dependency": "terser",
+          "title": "Terser insecure use of regular expressions leads to ReDoS",
+          "url": "https://github.com/advisories/GHSA-4wf5-vphf-c2xc",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=5.0.0 <5.14.2"
+        }
+      ],
+      "effects": [],
+      "range": "5.0.0 - 5.14.1",
+      "nodes": [
+        "node_modules/terser"
+      ],
+      "fixAvailable": true
+    },
+    "tmp": {
+      "name": "tmp",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1106849,
+          "name": "tmp",
+          "dependency": "tmp",
+          "title": "tmp allows arbitrary temporary file / directory write via symbolic link `dir` parameter",
+          "url": "https://github.com/advisories/GHSA-52f5-9888-hmc6",
+          "severity": "low",
+          "cwe": [
+            "CWE-59"
+          ],
+          "cvss": {
+            "score": 2.5,
+            "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": "<=0.2.3"
+        }
+      ],
+      "effects": [],
+      "range": "<=0.2.3",
+      "nodes": [
+        "node_modules/tmp"
+      ],
+      "fixAvailable": true
+    },
+    "tough-cookie": {
+      "name": "tough-cookie",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1097682,
+          "name": "tough-cookie",
+          "dependency": "tough-cookie",
+          "title": "tough-cookie Prototype Pollution vulnerability",
+          "url": "https://github.com/advisories/GHSA-72xf-g2v4-qvf3",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N"
+          },
+          "range": "<4.1.3"
+        }
+      ],
+      "effects": [
+        "request"
+      ],
+      "range": "<4.1.3",
+      "nodes": [
+        "node_modules/tough-cookie"
+      ],
+      "fixAvailable": {
+        "name": "electron-rebuild",
+        "version": "3.2.9",
+        "isSemVerMajor": true
+      }
+    },
+    "update-notifier": {
+      "name": "update-notifier",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "latest-version"
+      ],
+      "effects": [
+        "electron-builder"
+      ],
+      "range": "0.2.0 - 5.1.0",
+      "nodes": [
+        "node_modules/update-notifier"
+      ],
+      "fixAvailable": {
+        "name": "electron-builder",
+        "version": "26.0.12",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 2,
+      "moderate": 11,
+      "high": 14,
+      "critical": 7,
+      "total": 34
+    },
+    "dependencies": {
+      "prod": 397,
+      "dev": 0,
+      "optional": 36,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 432
+    }
+  }
+}
