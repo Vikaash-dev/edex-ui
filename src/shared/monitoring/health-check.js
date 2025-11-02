@@ -19,8 +19,8 @@
  *   const status = await healthCheck.getStatus();
  */
 
-const { createLogger } = require('../logger');
-const logger = createLogger('health-check');
+const { createLogger } = require("../logger");
+const logger = createLogger("health-check");
 
 class HealthCheckSystem {
     constructor(config = {}) {
@@ -31,7 +31,7 @@ class HealthCheckSystem {
     
     registerModule(name, module) {
         if (this.modules.has(name)) {
-            logger.warn('Module already registered, overwriting', { name });
+            logger.warn("Module already registered, overwriting", { name });
         }
         
         this.modules.set(name, {
@@ -42,12 +42,12 @@ class HealthCheckSystem {
             consecutiveFailures: 0
         });
         
-        logger.info('Module registered for health checks', { name });
+        logger.info("Module registered for health checks", { name });
     }
     
     unregisterModule(name) {
         if (this.modules.delete(name)) {
-            logger.info('Module unregistered from health checks', { name });
+            logger.info("Module unregistered from health checks", { name });
         }
     }
     
@@ -55,7 +55,7 @@ class HealthCheckSystem {
         const module = this.modules.get(name);
         
         if (!module) {
-            logger.error('Module not found', { name });
+            logger.error("Module not found", { name });
             return null;
         }
         
@@ -80,7 +80,7 @@ class HealthCheckSystem {
                 module.consecutiveFailures = 0;
             } else {
                 module.consecutiveFailures++;
-                logger.warn('Module health check failed', {
+                logger.warn("Module health check failed", {
                     name,
                     consecutiveFailures: module.consecutiveFailures,
                     message: status.message
@@ -89,7 +89,7 @@ class HealthCheckSystem {
             
             return status;
         } catch (error) {
-            logger.error('Health check error', { name, error: error.message });
+            logger.error("Health check error", { name, error: error.message });
             
             module.consecutiveFailures++;
             
@@ -121,7 +121,7 @@ class HealthCheckSystem {
         
         const summary = {
             timestamp: Date.now(),
-            overall: checks.every(c => c.healthy) ? 'healthy' : 'degraded',
+            overall: checks.every(c => c.healthy) ? "healthy" : "degraded",
             modules: checks,
             totalModules: this.modules.size,
             healthyModules: checks.filter(c => c.healthy).length,
@@ -133,17 +133,17 @@ class HealthCheckSystem {
     
     startPeriodicChecks() {
         if (this.intervalId) {
-            logger.warn('Periodic checks already running');
+            logger.warn("Periodic checks already running");
             return;
         }
         
-        logger.info('Starting periodic health checks', { interval: this.checkInterval });
+        logger.info("Starting periodic health checks", { interval: this.checkInterval });
         
         this.intervalId = setInterval(async () => {
             const status = await this.getStatus();
             
             if (status.unhealthyModules > 0) {
-                logger.warn('Unhealthy modules detected', {
+                logger.warn("Unhealthy modules detected", {
                     unhealthy: status.unhealthyModules,
                     modules: status.modules.filter(m => !m.healthy).map(m => m.name)
                 });
@@ -155,7 +155,7 @@ class HealthCheckSystem {
         if (this.intervalId) {
             clearInterval(this.intervalId);
             this.intervalId = null;
-            logger.info('Stopped periodic health checks');
+            logger.info("Stopped periodic health checks");
         }
     }
     
@@ -170,15 +170,15 @@ class HealthCheckSystem {
                 modules.push({
                     name,
                     healthy: null,
-                    message: 'Not yet checked'
+                    message: "Not yet checked"
                 });
             }
         }
         
         return {
             timestamp: Date.now(),
-            overall: modules.every(m => m.healthy === true) ? 'healthy' : 
-                     modules.some(m => m.healthy === false) ? 'degraded' : 'unknown',
+            overall: modules.every(m => m.healthy === true) ? "healthy" :
+                modules.some(m => m.healthy === false) ? "degraded" : "unknown",
             modules,
             totalModules: this.modules.size
         };
