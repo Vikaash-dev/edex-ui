@@ -1,0 +1,48 @@
+{
+    "name": "eDEX-UI",
+    "type": "dark",
+    "colors": {
+        "editor.background": "#0D1117",
+        "editor.foreground": "#58A6FF",
+        "editor.lineHighlightBackground": "#161B22",
+        "editorCursor.foreground": "#58A6FF",
+        "activityBar.background": "#0D1117",
+        "sideBar.background": "#0D1117",
+        "sideBar.foreground": "#C9D1D9",
+        "sideBarSectionHeader.background": "#161B22",
+        "list.hoverBackground": "#161B22",
+        "list.activeSelectionBackground": "#1F6FEB",
+        "list.activeSelectionForeground": "#FFFFFF",
+        "statusBar.background": "#0D1117",
+        "statusBar.foreground": "#C9D1D9",
+        "titleBar.activeBackground": "#0D1117",
+        "titleBar.activeForeground": "#C9D1D9",
+        "input.background": "#161B22"
+    },
+    "tokenColors": [
+        {
+            "scope": ["comment"],
+            "settings": {
+                "foreground": "#8B949E"
+            }
+        },
+        {
+            "scope": ["string"],
+            "settings": {
+                "foreground": "#A5D6FF"
+            }
+        },
+        {
+            "scope": ["keyword"],
+            "settings": {
+                "foreground": "#FF7B72"
+            }
+        },
+        {
+            "scope": ["number"],
+            "settings": {
+                "foreground": "#F0883E"
+            }
+        }
+    ]
+}
