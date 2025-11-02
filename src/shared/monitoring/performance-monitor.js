@@ -13,8 +13,8 @@
  *   const metrics = monitor.getMetrics();
  */
 
-const { createLogger } = require('../logger');
-const logger = createLogger('performance-monitor');
+const { createLogger } = require("../logger");
+const logger = createLogger("performance-monitor");
 
 class PerformanceMonitor {
     constructor(config = {}) {
@@ -38,17 +38,17 @@ class PerformanceMonitor {
     
     start() {
         if (!this.enabled) {
-            logger.info('Performance monitoring disabled');
+            logger.info("Performance monitoring disabled");
             return;
         }
         
-        logger.info('Starting performance monitoring');
+        logger.info("Starting performance monitoring");
         
         // FPS monitoring
         this.startFPSMonitoring();
         
         // Memory monitoring
-        if (typeof performance !== 'undefined' && performance.memory) {
+        if (typeof performance !== "undefined" && performance.memory) {
             this.startMemoryMonitoring();
         }
         
@@ -59,7 +59,7 @@ class PerformanceMonitor {
     }
     
     stop() {
-        logger.info('Stopping performance monitoring');
+        logger.info("Stopping performance monitoring");
         
         this.intervals.forEach(interval => clearInterval(interval));
         this.intervals = [];
@@ -80,7 +80,7 @@ class PerformanceMonitor {
             // Calculate FPS every second
             if (delta >= 1000) {
                 const fps = Math.round((this.frameCount * 1000) / delta);
-                this.recordSample('fps', fps);
+                this.recordSample("fps", fps);
                 
                 this.frameCount = 0;
                 this.lastFrameTime = now;
@@ -96,11 +96,11 @@ class PerformanceMonitor {
         this.intervals.push(setInterval(() => {
             if (performance.memory) {
                 const memoryMB = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
-                this.recordSample('memory', memoryMB);
+                this.recordSample("memory", memoryMB);
                 
                 // Warn if memory usage is high
                 if (memoryMB > 500) {
-                    logger.warn('High memory usage detected', { memoryMB });
+                    logger.warn("High memory usage detected", { memoryMB });
                 }
             }
         }, this.sampleInterval));
@@ -182,9 +182,9 @@ class PerformanceMonitor {
     logCurrentMetrics() {
         const metrics = this.getMetrics();
         
-        logger.info('Performance metrics', {
+        logger.info("Performance metrics", {
             fps: metrics.fps?.avg?.toFixed(1),
-            memory: metrics.memory?.avg?.toFixed(0) + 'MB',
+            memory: metrics.memory?.avg?.toFixed(0) + "MB",
             customMetrics: Object.keys(metrics.custom).length
         });
     }
@@ -200,7 +200,7 @@ class PerformanceMonitor {
             this.recordMetric(name, duration);
             
             if (duration > 100) {
-                logger.warn('Slow operation detected', { name, durationMs: duration.toFixed(2) });
+                logger.warn("Slow operation detected", { name, durationMs: duration.toFixed(2) });
             }
             
             return result;
@@ -221,7 +221,7 @@ class PerformanceMonitor {
             this.recordMetric(name, duration);
             
             if (duration > 100) {
-                logger.warn('Slow operation detected', { name, durationMs: duration.toFixed(2) });
+                logger.warn("Slow operation detected", { name, durationMs: duration.toFixed(2) });
             }
             
             return result;
@@ -234,23 +234,23 @@ class PerformanceMonitor {
     
     // Mark a point in time for later measurement
     mark(name) {
-        if (typeof performance !== 'undefined' && performance.mark) {
+        if (typeof performance !== "undefined" && performance.mark) {
             performance.mark(name);
         }
     }
     
     // Measure between two marks
     measureBetween(name, startMark, endMark) {
-        if (typeof performance !== 'undefined' && performance.measure) {
+        if (typeof performance !== "undefined" && performance.measure) {
             try {
                 performance.measure(name, startMark, endMark);
                 
-                const entry = performance.getEntriesByName(name, 'measure')[0];
+                const entry = performance.getEntriesByName(name, "measure")[0];
                 if (entry) {
                     this.recordMetric(name, entry.duration);
                 }
             } catch (e) {
-                logger.error('Failed to measure between marks', { name, error: e.message });
+                logger.error("Failed to measure between marks", { name, error: e.message });
             }
         }
     }
@@ -263,9 +263,9 @@ class PerformanceMonitor {
         // Check FPS
         if (metrics.fps && metrics.fps.avg < 30) {
             issues.push({
-                type: 'performance',
-                severity: 'warning',
-                message: 'Low FPS detected',
+                type: "performance",
+                severity: "warning",
+                message: "Low FPS detected",
                 value: metrics.fps.avg.toFixed(1)
             });
         }
@@ -273,10 +273,10 @@ class PerformanceMonitor {
         // Check memory
         if (metrics.memory && metrics.memory.avg > 500) {
             issues.push({
-                type: 'memory',
-                severity: 'warning',
-                message: 'High memory usage',
-                value: metrics.memory.avg.toFixed(0) + 'MB'
+                type: "memory",
+                severity: "warning",
+                message: "High memory usage",
+                value: metrics.memory.avg.toFixed(0) + "MB"
             });
         }
         

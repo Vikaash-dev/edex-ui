@@ -30,7 +30,7 @@ if (!gotLock) {
 signale.time("Startup");
 
 const electron = require("electron");
-require('@electron/remote/main').initialize()
+require("@electron/remote/main").initialize();
 const ipc = electron.ipcMain;
 const path = require("path");
 const url = require("url");
@@ -74,7 +74,7 @@ try {
 if (!fs.existsSync(settingsFile)) {
     fs.writeFileSync(settingsFile, JSON.stringify({
         shell: (process.platform === "win32") ? "powershell.exe" : "bash",
-        shellArgs: '',
+        shellArgs: "",
         cwd: electron.app.getPath("userData"),
         keyboard: "en-US",
         theme: "tron",
@@ -157,12 +157,12 @@ const versionHistoryPath = path.join(electron.app.getPath("userData"), "versions
 var versionHistory = fs.existsSync(versionHistoryPath) ? require(versionHistoryPath) : {};
 var version = app.getVersion();
 if (typeof versionHistory[version] === "undefined") {
-	versionHistory[version] = {
-		firstSeen: Date.now(),
-		lastSeen: Date.now()
-	};
+    versionHistory[version] = {
+        firstSeen: Date.now(),
+        lastSeen: Date.now()
+    };
 } else {
-	versionHistory[version].lastSeen = Date.now();
+    versionHistory[version].lastSeen = Date.now();
 }
 fs.writeFileSync(versionHistoryPath, JSON.stringify(versionHistory, 0, 2), {encoding:"utf-8"});
 
@@ -189,10 +189,10 @@ function createWindow(settings) {
         fullscreen: settings.forceFullscreen || false,
         autoHideMenuBar: true,
         frame: settings.allowWindowed || false,
-        backgroundColor: '#000000',
+        backgroundColor: "#000000",
         webPreferences: {
             devTools: true,
-	    enableRemoteModule: true,
+            enableRemoteModule: true,
             contextIsolation: false,
             backgroundThrottling: false,
             webSecurity: true,
@@ -204,8 +204,8 @@ function createWindow(settings) {
     });
 
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'ui.html'),
-        protocol: 'file:',
+        pathname: path.join(__dirname, "ui.html"),
+        protocol: "file:",
         slashes: true
     }));
 
@@ -220,13 +220,13 @@ function createWindow(settings) {
     signale.watch("Waiting for frontend connection...");
 }
 
-app.on('ready', async () => {
-    signale.pending(`Loading settings file...`);
+app.on("ready", async () => {
+    signale.pending("Loading settings file...");
     let settings = require(settingsFile);
-    signale.pending(`Resolving shell path...`);
-    settings.shell = await which(settings.shell).catch(e => { throw(e) });
+    signale.pending("Resolving shell path...");
+    settings.shell = await which(settings.shell).catch(e => { throw(e); });
     signale.info(`Shell found at ${settings.shell}`);
-    signale.success(`Settings loaded!`);
+    signale.success("Settings loaded!");
 
     if (!require("fs").existsSync(settings.cwd)) throw new Error("Configured cwd path does not exist.");
 
@@ -240,16 +240,16 @@ app.on('ready', async () => {
         TERM_PROGRAM_VERSION: app.getVersion()
     }, settings.env);
 
-    signale.pending(`Creating new terminal process on port ${settings.port || '3000'}`);
+    signale.pending(`Creating new terminal process on port ${settings.port || "3000"}`);
     tty = new Terminal({
         role: "server",
         shell: settings.shell,
-        params: settings.shellArgs || '',
+        params: settings.shellArgs || "",
         cwd: settings.cwd,
         env: cleanEnv,
         port: settings.port || 3000
     });
-    signale.success(`Terminal back-end initialized!`);
+    signale.success("Terminal back-end initialized!");
     tty.onclosed = (code, signal) => {
         tty.ondisconnected = () => {};
         signale.complete("Terminal exited", code, signal);
@@ -282,7 +282,7 @@ app.on('ready', async () => {
         extraTtys[basePort+i] = null;
     }
 
-    ipc.on("ttyspawn", (e, arg) => {
+    ipc.on("ttyspawn", (e, _arg) => {
         let port = null;
         Object.keys(extraTtys).forEach(key => {
             if (extraTtys[key] === null && port === null) {
@@ -299,7 +299,7 @@ app.on('ready', async () => {
             let term = new Terminal({
                 role: "server",
                 shell: settings.shell,
-                params: settings.shellArgs || '',
+                params: settings.shellArgs || "",
                 cwd: tty.tty._cwd || settings.cwd,
                 env: cleanEnv,
                 port: port
@@ -332,10 +332,10 @@ app.on('ready', async () => {
     // Backend support for theme and keyboard hotswitch
     let themeOverride = null;
     let kbOverride = null;
-    ipc.on("getThemeOverride", (e, arg) => {
+    ipc.on("getThemeOverride", (e, _arg) => {
         e.sender.send("getThemeOverride", themeOverride);
     });
-    ipc.on("getKbOverride", (e, arg) => {
+    ipc.on("getKbOverride", (e, _arg) => {
         e.sender.send("getKbOverride", kbOverride);
     });
     ipc.on("setThemeOverride", (e, arg) => {
@@ -346,25 +346,25 @@ app.on('ready', async () => {
     });
 });
 
-app.on('web-contents-created', (e, contents) => {
+app.on("web-contents-created", (e, contents) => {
     // Prevent creating more than one window
-    contents.on('new-window', (e, url) => {
+    contents.on("new-window", (e, url) => {
         e.preventDefault();
         shell.openExternal(url);
     });
 
     // Prevent loading something else than the UI
-    contents.on('will-navigate', (e, url) => {
+    contents.on("will-navigate", (e, url) => {
         if (url !== contents.getURL()) e.preventDefault();
     });
 });
 
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
     signale.info("All windows closed");
     app.quit();
 });
 
-app.on('before-quit', () => {
+app.on("before-quit", () => {
     tty.close();
     Object.keys(extraTtys).forEach(key => {
         if (extraTtys[key] !== null) {

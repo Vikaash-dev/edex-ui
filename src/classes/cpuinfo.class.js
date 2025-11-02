@@ -14,13 +14,16 @@ class Cpuinfo {
 
         this.series = [];
         this.charts = [];
-        window.si.cpu().then(data => {
-            let divide = Math.floor(data.cores/2);
+        window.si.cpu().then((data) => {
+            let divide = Math.floor(data.cores / 2);
             this.divide = divide;
 
-            let cpuName = data.manufacturer+data.brand;
+            let cpuName = data.manufacturer + data.brand;
             cpuName = cpuName.substr(0, 30);
-            cpuName.substr(0, Math.min(cpuName.length, cpuName.lastIndexOf(" ")));
+            cpuName.substr(
+                0,
+                Math.min(cpuName.length, cpuName.lastIndexOf(" "))
+            );
 
             let innercontainer = document.createElement("div");
             innercontainer.setAttribute("id", "mod_cpuinfo_innercontainer");
@@ -31,14 +34,14 @@ class Cpuinfo {
                     <canvas id="mod_cpuinfo_canvas_0" height="60"></canvas>
                 </div>
                 <div>
-                    <h1># <em>${divide+1}</em> - <em>${data.cores}</em><br>
+                    <h1># <em>${divide + 1}</em> - <em>${data.cores}</em><br>
                     <i id="mod_cpuinfo_usagecounter1">Avg. --%</i></h1>
                     <canvas id="mod_cpuinfo_canvas_1" height="60"></canvas>
                 </div>
                 <div>
                     <div>
-                        <h1>${(process.platform === "win32") ? "CORES" : "TEMP"}<br>
-                        <i id="mod_cpuinfo_temp">${(process.platform === "win32") ? data.cores : "--°C"}</i></h1>
+                        <h1>${process.platform === "win32" ? "CORES" : "TEMP"}<br>
+                        <i id="mod_cpuinfo_temp">${process.platform === "win32" ? data.cores : "--°C"}</i></h1>
                     </div>
                     <div>
                         <h1>SPD<br>
@@ -55,51 +58,58 @@ class Cpuinfo {
                 </div>`;
             this.container.append(innercontainer);
 
-            for (var i = 0; i < 2; i++) {
-                this.charts.push(new SmoothieChart({
-                    limitFPS: 30,
-                    responsive: true,
-                    millisPerPixel: 50,
-                    grid:{
-                        fillStyle:'transparent',
-                        strokeStyle:'transparent',
-                        verticalSections:0,
-                        borderVisible:false
-                    },
-                    labels:{
-                        disabled: true
-                    },
-                    yRangeFunction: () => {
-                        return {min:0,max:100};
-                    }
-                }));
+            for (let chartIndex = 0; chartIndex < 2; chartIndex++) {
+                this.charts.push(
+                    new SmoothieChart({
+                        limitFPS: 30,
+                        responsive: true,
+                        millisPerPixel: 50,
+                        grid: {
+                            fillStyle: "transparent",
+                            strokeStyle: "transparent",
+                            verticalSections: 0,
+                            borderVisible: false
+                        },
+                        labels: {
+                            disabled: true
+                        },
+                        yRangeFunction: () => {
+                            return { min: 0, max: 100 };
+                        }
+                    })
+                );
             }
 
-            for (var i = 0; i < data.cores; i++) {
+            for (let coreIndex = 0; coreIndex < data.cores; coreIndex++) {
                 // Create TimeSeries
                 this.series.push(new TimeSeries());
 
-                let serie = this.series[i];
+                let serie = this.series[coreIndex];
                 let options = {
                     lineWidth: 1.7,
                     strokeStyle: `rgb(${window.theme.r},${window.theme.g},${window.theme.b})`
                 };
 
-                if (i < divide) {
+                if (coreIndex < divide) {
                     this.charts[0].addTimeSeries(serie, options);
                 } else {
                     this.charts[1].addTimeSeries(serie, options);
                 }
             }
 
-            for (var i = 0; i < 2; i++) {
-                this.charts[i].streamTo(document.getElementById(`mod_cpuinfo_canvas_${i}`), 500);
+            for (let chartIndex = 0; chartIndex < 2; chartIndex++) {
+                this.charts[chartIndex].streamTo(
+                    document.getElementById(`mod_cpuinfo_canvas_${chartIndex}`),
+                    500
+                );
             }
 
             // Init updater
             this.updatingCPUload = false;
             this.updateCPUload();
-            if (process.platform !== "win32") {this.updateCPUtemp();}
+            if (process.platform !== "win32") {
+                this.updateCPUtemp();
+            }
             this.updatingCPUspeed = false;
             this.updateCPUspeed();
             this.updatingCPUtasks = false;
@@ -123,7 +133,7 @@ class Cpuinfo {
     updateCPUload() {
         if (this.updatingCPUload) return;
         this.updatingCPUload = true;
-        window.si.currentLoad().then(data => {
+        window.si.currentLoad().then((data) => {
             let average = [[], []];
 
             if (!data.cpus) return; // Prevent memleak in rare case where systeminformation takes extra time to retrieve CPU info (see github issue #216)
@@ -138,11 +148,15 @@ class Cpuinfo {
                 }
             });
             average.forEach((stats, i) => {
-                average[i] = Math.round(stats.reduce((a, b) => a + b, 0)/stats.length);
+                average[i] = Math.round(
+                    stats.reduce((a, b) => a + b, 0) / stats.length
+                );
 
                 try {
-                    document.getElementById(`mod_cpuinfo_usagecounter${i}`).innerText = `Avg. ${average[i]}%`;
-                } catch(e) {
+                    document.getElementById(
+                        `mod_cpuinfo_usagecounter${i}`
+                    ).innerText = `Avg. ${average[i]}%`;
+                } catch (e) {
                     // Fail silently, DOM element is probably getting refreshed (new theme, etc)
                 }
             });
@@ -150,22 +164,25 @@ class Cpuinfo {
         });
     }
     updateCPUtemp() {
-        window.si.cpuTemperature().then(data => {
+        window.si.cpuTemperature().then((data) => {
             try {
-                document.getElementById("mod_cpuinfo_temp").innerText = `${data.max}°C`;
-            } catch(e) {
+                document.getElementById("mod_cpuinfo_temp").innerText =
+                    `${data.max}°C`;
+            } catch (e) {
                 // See above notice
             }
         });
     }
     updateCPUspeed() {
         if (this.updatingCPUspeed) return;
-        this.updatingCPUspeed = true
-        window.si.cpu().then(data => {
+        this.updatingCPUspeed = true;
+        window.si.cpu().then((data) => {
             try {
-                document.getElementById("mod_cpuinfo_speed_min").innerText = `${data.speed}GHz`;
-                document.getElementById("mod_cpuinfo_speed_max").innerText = `${data.speedMax}GHz`;
-            } catch(e) {
+                document.getElementById("mod_cpuinfo_speed_min").innerText =
+                    `${data.speed}GHz`;
+                document.getElementById("mod_cpuinfo_speed_max").innerText =
+                    `${data.speedMax}GHz`;
+            } catch (e) {
                 // See above notice
             }
             this.updatingCPUspeed = false;
@@ -174,10 +191,11 @@ class Cpuinfo {
     updateCPUtasks() {
         if (this.updatingCPUtasks) return;
         this.updatingCPUtasks = true;
-        window.si.processes().then(data => {
+        window.si.processes().then((data) => {
             try {
-                document.getElementById("mod_cpuinfo_tasks").innerText = `${data.all}`;
-            } catch(e) {
+                document.getElementById("mod_cpuinfo_tasks").innerText =
+                    `${data.all}`;
+            } catch (e) {
                 // See above notice
             }
             this.updatingCPUtasks = false;

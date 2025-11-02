@@ -28,6 +28,7 @@ if (cluster.isMaster) {
 
     var lastID = 0;
 
+    // eslint-disable-next-line no-inner-declarations
     function dispatch(type, id, arg) {
         let selectedID = lastID+1;
         if (selectedID > numCPUs-1) selectedID = 0;

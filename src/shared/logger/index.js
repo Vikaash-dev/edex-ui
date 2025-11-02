@@ -8,9 +8,9 @@
  *   terminalLogger.info('Terminal initialized', { cols: 80, rows: 24 });
  */
 
-const fs = require('fs');
-const path = require('path');
-const { app } = require('electron');
+const fs = require("fs");
+const path = require("path");
+const { app } = require("electron");
 
 // Log levels
 const LogLevel = {
@@ -21,13 +21,13 @@ const LogLevel = {
     TRACE: 4
 };
 
-const LogLevelNames = ['ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE'];
+const LogLevelNames = ["ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
 
 class Logger {
     constructor(config = {}) {
         this.level = config.level || LogLevel.INFO;
-        this.module = config.module || 'app';
-        this.outputs = config.outputs || ['console'];
+        this.module = config.module || "app";
+        this.outputs = config.outputs || ["console"];
         this.logDir = config.logDir || this.getDefaultLogDir();
         this.maxLogSize = config.maxLogSize || 10 * 1024 * 1024; // 10MB
         this.maxLogFiles = config.maxLogFiles || 5;
@@ -41,10 +41,10 @@ class Logger {
     
     getDefaultLogDir() {
         try {
-            const userDataPath = app.getPath('userData');
-            return path.join(userDataPath, 'logs');
+            const userDataPath = app.getPath("userData");
+            return path.join(userDataPath, "logs");
         } catch (e) {
-            return path.join(process.cwd(), 'logs');
+            return path.join(process.cwd(), "logs");
         }
     }
     
@@ -55,7 +55,7 @@ class Logger {
     }
     
     rotateLogs() {
-        const logFile = path.join(this.logDir, 'edex-ui.log');
+        const logFile = path.join(this.logDir, "edex-ui.log");
         
         if (fs.existsSync(logFile)) {
             const stats = fs.statSync(logFile);
@@ -76,7 +76,7 @@ class Logger {
                 }
                 
                 // Move current log to .1
-                fs.renameSync(logFile, path.join(this.logDir, 'edex-ui.log.1'));
+                fs.renameSync(logFile, path.join(this.logDir, "edex-ui.log.1"));
             }
         }
     }
@@ -98,15 +98,15 @@ class Logger {
     
     formatForConsole(logEntry) {
         const colors = {
-            ERROR: '\x1b[31m', // Red
-            WARN: '\x1b[33m',  // Yellow
-            INFO: '\x1b[36m',  // Cyan
-            DEBUG: '\x1b[90m', // Gray
-            TRACE: '\x1b[37m'  // White
+            ERROR: "\x1b[31m", // Red
+            WARN: "\x1b[33m",  // Yellow
+            INFO: "\x1b[36m",  // Cyan
+            DEBUG: "\x1b[90m", // Gray
+            TRACE: "\x1b[37m"  // White
         };
         
-        const reset = '\x1b[0m';
-        const color = colors[logEntry.level] || '';
+        const reset = "\x1b[0m";
+        const color = colors[logEntry.level] || "";
         
         let output = `${color}[${logEntry.timestamp}] [${logEntry.level}] [${logEntry.module}]${reset} ${logEntry.message}`;
         
@@ -137,27 +137,31 @@ class Logger {
         const logEntry = this.formatMessage(level, message, meta);
         
         // Console output
-        if (this.outputs.includes('console')) {
+        if (this.outputs.includes("console")) {
             const formatted = this.formatForConsole(logEntry);
             
             if (level === LogLevel.ERROR) {
+                // eslint-disable-next-line no-console
                 console.error(formatted);
             } else if (level === LogLevel.WARN) {
+                // eslint-disable-next-line no-console
                 console.warn(formatted);
             } else {
+                // eslint-disable-next-line no-console
                 console.log(formatted);
             }
         }
         
         // File output
-        if (this.outputs.includes('file')) {
-            const logFile = path.join(this.logDir, 'edex-ui.log');
-            const formatted = this.formatForFile(logEntry) + '\n';
+        if (this.outputs.includes("file")) {
+            const logFile = path.join(this.logDir, "edex-ui.log");
+            const formatted = this.formatForFile(logEntry) + "\n";
             
             try {
-                fs.appendFileSync(logFile, formatted, 'utf8');
+                fs.appendFileSync(logFile, formatted, "utf8");
             } catch (e) {
-                console.error('Failed to write to log file:', e.message);
+                // eslint-disable-next-line no-console
+                console.error("Failed to write to log file:", e.message);
             }
         }
     }
@@ -215,7 +219,7 @@ function getLogger() {
     if (!globalLogger) {
         globalLogger = new Logger({
             level: process.env.LOG_LEVEL ? LogLevel[process.env.LOG_LEVEL.toUpperCase()] : LogLevel.INFO,
-            outputs: process.env.NODE_ENV === 'production' ? ['file'] : ['console', 'file']
+            outputs: process.env.NODE_ENV === "production" ? ["file"] : ["console", "file"]
         });
     }
     return globalLogger;

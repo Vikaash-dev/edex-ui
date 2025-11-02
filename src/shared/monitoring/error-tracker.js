@@ -11,8 +11,8 @@
  *   errorTracker.trackError(error, { module: 'terminal', context: 'initialization' });
  */
 
-const { createLogger } = require('../logger');
-const logger = createLogger('error-tracker');
+const { createLogger } = require("../logger");
+const logger = createLogger("error-tracker");
 
 class ErrorTracker {
     constructor(config = {}) {
@@ -24,17 +24,17 @@ class ErrorTracker {
     
     start() {
         if (!this.enabled) {
-            logger.info('Error tracking disabled');
+            logger.info("Error tracking disabled");
             return;
         }
         
-        logger.info('Starting error tracking');
+        logger.info("Starting error tracking");
         
         // Global error handler
-        if (typeof window !== 'undefined') {
-            window.addEventListener('error', (event) => {
+        if (typeof window !== "undefined") {
+            window.addEventListener("error", (event) => {
                 this.handleGlobalError({
-                    type: 'uncaught-error',
+                    type: "uncaught-error",
                     message: event.message,
                     filename: event.filename,
                     line: event.lineno,
@@ -43,9 +43,9 @@ class ErrorTracker {
                 });
             });
             
-            window.addEventListener('unhandledrejection', (event) => {
+            window.addEventListener("unhandledrejection", (event) => {
                 this.handleGlobalError({
-                    type: 'unhandled-promise',
+                    type: "unhandled-promise",
                     reason: event.reason,
                     promise: event.promise
                 });
@@ -53,19 +53,19 @@ class ErrorTracker {
         }
         
         // Process error handler (Node.js)
-        if (typeof process !== 'undefined') {
-            process.on('uncaughtException', (error) => {
+        if (typeof process !== "undefined") {
+            process.on("uncaughtException", (error) => {
                 this.handleGlobalError({
-                    type: 'uncaught-exception',
+                    type: "uncaught-exception",
                     message: error.message,
                     stack: error.stack,
                     code: error.code
                 });
             });
             
-            process.on('unhandledRejection', (reason, promise) => {
+            process.on("unhandledRejection", (reason, promise) => {
                 this.handleGlobalError({
-                    type: 'unhandled-rejection',
+                    type: "unhandled-rejection",
                     reason: reason,
                     promise: promise
                 });
@@ -81,7 +81,7 @@ class ErrorTracker {
         
         this.trackError(error);
         
-        logger.error('Global error caught', error);
+        logger.error("Global error caught", error);
     }
     
     trackError(error, context = {}) {
@@ -91,7 +91,7 @@ class ErrorTracker {
             timestamp: Date.now(),
             message: error.message || String(error),
             stack: error.stack,
-            type: error.type || 'error',
+            type: error.type || "error",
             ...context
         };
         
@@ -108,7 +108,7 @@ class ErrorTracker {
         this.errorCounts.set(errorKey, (this.errorCounts.get(errorKey) || 0) + 1);
         
         // Log the error
-        logger.error('Error tracked', {
+        logger.error("Error tracked", {
             type: errorRecord.type,
             message: errorRecord.message,
             count: this.errorCounts.get(errorKey)
@@ -156,7 +156,7 @@ class ErrorTracker {
     clearErrors() {
         this.errors = [];
         this.errorCounts.clear();
-        logger.info('Error history cleared');
+        logger.info("Error history cleared");
     }
 }
 
