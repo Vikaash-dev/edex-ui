@@ -144,9 +144,9 @@ class LocationGlobe {
                 this.updateLoc();
             }, 1000);
 
-            this.updateConns();
+            this.updateThreats();
             this.connsUpdater = setInterval(() => {
-                this.updateConns();
+                this.updateThreats();
             }, 3000);
         }, 4000);
     }
@@ -251,35 +251,26 @@ class LocationGlobe {
         this.lastgeo = newgeo;
         document.querySelector("div#mod_globe").setAttribute("class", "");
     }
-    updateConns() {
-        if (!window.mods.globe.globe || window.mods.netstat.offline)
-            return false;
-        window.si.networkConnections().then((conns) => {
-            let newconns = [];
-            conns.forEach((conn) => {
-                let ip = conn.peeraddress;
-                let state = conn.state;
-                if (
-                    state === "ESTABLISHED" &&
-                    ip !== "0.0.0.0" &&
-                    ip !== "127.0.0.1" &&
-                    ip !== "::"
-                ) {
-                    newconns.push(ip);
-                }
-            });
+    updateThreats() {
+        if (!window.mods.globe.globe || !window.mods.threatIntel) return false;
 
-            this.conns.forEach((conn) => {
-                if (newconns.indexOf(conn.ip) !== -1) {
-                    newconns.splice(newconns.indexOf(conn.ip), 1);
-                } else {
-                    this.removeConn(conn.ip);
-                }
-            });
+        this.removePins();
+        this.removeMarkers();
 
-            newconns.forEach((ip) => {
-                this.addConn(ip);
-            });
+        const threats = window.mods.threatIntel.threats;
+        if (!threats || threats.length === 0) return;
+
+        threats.forEach(threat => {
+            if (threat.source === "Abuse.ch") {
+                const url = new URL(threat.url);
+                const hostname = url.hostname;
+                const geo = window.mods.netstat.geoLookup.get(hostname);
+                if (geo && geo.location) {
+                    const { latitude, longitude } = geo.location;
+                    this.globe.addPin(latitude, longitude, threat.threat, 1.2);
+                    this.globe.addMarker(latitude, longitude, threat.threat, true);
+                }
+            }
         });
     }
 }

@@ -17,8 +17,8 @@ class Netstat {
                         <h2>--.--.--.--</h2>
                     </div>
                     <div>
-                        <h1>PING</h1>
-                        <h2>--ms</h2>
+                        <h1>THREATS</h1>
+                        <h2>--</h2>
                     </div>
                 </div>
             </div>
@@ -70,8 +70,6 @@ class Netstat {
     }
     updateInfo() {
         window.si.networkInterfaces().then(async (data) => {
-            let offline = false;
-
             let net = data[0];
             let netID = 0;
 
@@ -126,9 +124,7 @@ class Netstat {
             document.getElementById("mod_netstat_iname").innerText =
                 "Interface: " + net.iface;
 
-            if (net.ip4 === "127.0.0.1") {
-                offline = true;
-            } else {
+            if (net.ip4 !== "127.0.0.1") {
                 if (
                     this.runsBeforeGeoIPUpdate === 0 &&
                     this.lastconn.finished
@@ -189,63 +185,18 @@ class Netstat {
                     this.runsBeforeGeoIPUpdate = this.runsBeforeGeoIPUpdate - 1;
                 }
 
-                let p = await this.ping(
-                    window.settings.pingAddr || "1.1.1.1",
-                    80,
-                    net.ip4
-                ).catch(() => {
-                    offline = true;
-                });
+                this.offline = false;
+                document.querySelector(
+                    "#mod_netstat_innercontainer > div:first-child > h2"
+                ).textContent = "ONLINE";
 
-                this.offline = offline;
-                if (offline) {
-                    document.querySelector(
-                        "#mod_netstat_innercontainer > div:first-child > h2"
-                    ).textContent = "OFFLINE";
-                    document.querySelector(
-                        "#mod_netstat_innercontainer > div:nth-child(2) > h2"
-                    ).textContent = "--.--.--.--";
+                if (window.mods.threatIntel) {
+                    const threats = window.mods.threatIntel.threats;
                     document.querySelector(
                         "#mod_netstat_innercontainer > div:nth-child(3) > h2"
-                    ).textContent = "--ms";
-                } else {
-                    document.querySelector(
-                        "#mod_netstat_innercontainer > div:first-child > h2"
-                    ).textContent = "ONLINE";
-                    document.querySelector(
-                        "#mod_netstat_innercontainer > div:nth-child(3) > h2"
-                    ).textContent = Math.round(p) + "ms";
+                    ).textContent = threats ? threats.length : 0;
                 }
             }
-        });
-    }
-    ping(target, port, local) {
-        return new Promise((resolve, reject) => {
-            let s = new require("net").Socket();
-            let start = process.hrtime();
-
-            s.connect(
-                {
-                    port,
-                    host: target,
-                    localAddress: local,
-                    family: 4
-                },
-                () => {
-                    let time_arr = process.hrtime(start);
-                    let time = (time_arr[0] * 1e9 + time_arr[1]) / 1e6;
-                    resolve(time);
-                    s.destroy();
-                }
-            );
-            s.on("error", (e) => {
-                s.destroy();
-                reject(e);
-            });
-            s.setTimeout(1900, function () {
-                s.destroy();
-                reject(new Error("Socket timeout"));
-            });
         });
     }
 }

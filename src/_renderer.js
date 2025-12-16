@@ -52,6 +52,7 @@ const { Cpuinfo } = require("./classes/cpuinfo.class.js");
 const { RAMwatcher } = require("./classes/ramwatcher.class.js");
 const { FilesystemDisplay } = require("./classes/filesystem.class.js");
 const { UpdateChecker } = require("./classes/updateChecker.class.js");
+const { ThreatIntel } = require("./classes/threatIntel.class.js");
 
 const settingsDir = remote.app.getPath("userData");
 const themesDir = path.join(settingsDir, "themes");
@@ -446,6 +447,11 @@ async function initUI() {
     window.mods.netstat = new Netstat("mod_column_right");
     window.mods.globe = new LocationGlobe("mod_column_right");
     window.mods.conninfo = new Conninfo("mod_column_right");
+    window.mods.threatIntel = new ThreatIntel();
+    window.mods.threatIntel.fetchThreats();
+    setInterval(() => {
+        window.mods.threatIntel.fetchThreats();
+    }, 300000);
 
     // Fade-in animations
     document.querySelectorAll(".mod_column").forEach(column => {
