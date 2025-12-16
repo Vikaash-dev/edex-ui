@@ -177,6 +177,27 @@ class Cpuinfo {
     updateCPUtasks() {
         if (this.updatingCPUtasks) return;
         this.updatingCPUtasks = true;
+
+        // Optimization: On *nix, use 'ps' count which is ~10x faster than si.processes() (which parses all process stats).
+        // On Windows, fallback to si.processes() as tasklist/wmic are often slower or complex to parse safely.
+        if (process.platform !== "win32") {
+            require("child_process").exec("ps -A | wc -l", (err, stdout) => {
+                if (!err) {
+                    try {
+                        let count = parseInt(stdout.trim()) - 1; // -1 for header
+                        document.getElementById("mod_cpuinfo_tasks").innerText = `${Math.max(0, count)}`;
+                    } catch(e) { /* ignore */ }
+                    this.updatingCPUtasks = false;
+                } else {
+                    // Fallback if ps fails
+                    this._fallbackUpdateCPUtasks();
+                }
+            });
+        } else {
+            this._fallbackUpdateCPUtasks();
+        }
+    }
+    _fallbackUpdateCPUtasks() {
         window.si.processes().then(data => {
             try {
                 document.getElementById("mod_cpuinfo_tasks").innerText = `${data.all}`;
