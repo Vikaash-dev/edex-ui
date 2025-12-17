@@ -2,6 +2,17 @@ class Toplist {
     constructor(parentId) {
         if (!parentId) throw "Missing parameters";
 
+        // Security helper
+        this.escapeHtml = (text) => {
+            if (typeof text !== 'string') return text;
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+
         // Create DOM
         this.parent = document.getElementById(parentId);
         this._element = document.createElement("div");
@@ -48,7 +59,7 @@ class Toplist {
             list.forEach(proc => {
                 let el = document.createElement("tr");
                 el.innerHTML = `<td>${proc.pid}</td>
-                                <td><strong>${proc.name}</strong></td>
+                                <td><strong>${this.escapeHtml(proc.name)}</strong></td>
                                 <td>${Math.round(proc.cpu*10)/10}%</td>
                                 <td>${Math.round(proc.mem*10)/10}%</td>`;
                 document.getElementById("mod_toplist_table").append(el);
@@ -62,6 +73,7 @@ class Toplist {
         let ascending = false;
         let removed = false;
         let currentlyUpdating = false;
+        const escapeHtml = this.escapeHtml;
 
         function setSortKey(fieldName){
             if (sortKey === fieldName){
@@ -99,6 +111,7 @@ class Toplist {
 
         function updateProcessList() {
             if (currentlyUpdating) return;
+
             currentlyUpdating = true;
             window.si.processes().then(data => {
                 if (window.settings.excludeThreadsFromToplist === true) {
@@ -178,12 +191,12 @@ class Toplist {
                     list.forEach(proc => {
                         let el = document.createElement("tr");
                         el.innerHTML = `<td class="pid">${proc.pid}</td>
-                            <td class="name">${proc.name}</td>
-                            <td class="user">${proc.user}</td>
+                            <td class="name">${escapeHtml(proc.name)}</td>
+                            <td class="user">${escapeHtml(proc.user)}</td>
                             <td class="cpu">${Math.round(proc.cpu * 10) / 10}%</td>
                             <td class="mem">${Math.round(proc.mem * 10) / 10}%</td>
-                            <td class="state">${proc.state}</td>
-                            <td class="started">${proc.started}</td>
+                            <td class="state">${escapeHtml(proc.state)}</td>
+                            <td class="started">${escapeHtml(proc.started)}</td>
                             <td class="runtime">${formatRuntime(proc.runtime)}</td>`;
                         document.getElementById("processList").append(el);
                     });
