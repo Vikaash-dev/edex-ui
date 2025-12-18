@@ -49,8 +49,8 @@ class Modal {
         }
 
         let DOMstring = `<div id="modal_${this.id}" class="${this.classes}" style="z-index:${zindex+Object.keys(window.modals).length};" augmented-ui="${augs.join(" ")} exe">
-            <h1>${this.title}</h1>
-            ${this.type === "custom" ? options.html : "<h5>"+this.message+"</h5>"}
+            <h1>${window._escapeHtml(this.title)}</h1>
+            ${this.type === "custom" ? options.html : "<h5>"+window._escapeHtml(this.message)+"</h5>"}
             <div>`;
             buttons.forEach(b => {
                 DOMstring += `<button onclick="${b.action}">${b.label}</button>`;

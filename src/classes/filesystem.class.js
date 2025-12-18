@@ -621,7 +621,7 @@ class FilesystemDisplay {
                                     title: _escapeHtml(name),
                                     html: `<textarea id="fileEdit" rows="40" cols="150" spellcheck="false">${data}</textarea><p id="fedit-status"></p>`,
                                     buttons: [
-                                        {label:"Save to Disk",action:`window.writeFile('${block.path}')`}
+                                        {label:"Save to Disk",action:`window.writeFile(${window._escapeHtml(JSON.stringify(block.path))})`}
                                     ]
                                 }, () => {
                                     window.keyboard.attach();
