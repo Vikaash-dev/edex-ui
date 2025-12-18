@@ -4,6 +4,7 @@ window.eval = global.eval = function () {
 };
 // Security helper :)
 window._escapeHtml = text => {
+    if (typeof text !== "string") return text;
     let map = {
         '&': '&amp;',
         '<': '&lt;',
