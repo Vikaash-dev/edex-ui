@@ -1,0 +1,55 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended"],
+  "globals": {
+    "edex": "readonly",
+    "__": "readonly",
+    "_": "readonly",
+    "Mousetrap": "readonly",
+    "DOMPurify": "readonly",
+    "Terminal": "readonly",
+    "Filesystem": "readonly",
+    "Clock": "readonly",
+    "Sysinfo": "readonly",
+    "Netstat": "readonly",
+    "Conninfo": "readonly",
+    "Toplist": "readonly",
+    "RAMCPU": "readonly",
+    "LocationGlobe": "readonly",
+    "AudioFX": "readonly",
+    "UpdateChecker": "readonly",
+    "HardwareInspector": "readonly",
+    "FuzzyFinder": "readonly",
+    "Modal": "readonly",
+    "MediaPlayer": "readonly",
+    "DocReader": "readonly",
+    "settings": "readonly",
+    "conn": "readonly",
+    "fs": "readonly",
+    "os": "readonly",
+    "path": "readonly",
+    "themes": "readonly",
+    "keyboards": "readonly",
+    "child_process": "readonly",
+    "_escapeHtml": "readonly",
+    "_delay": "readonly",
+    "module": "readonly",
+    "require": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-eval": "error",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "indent": ["error", 4]
+  }
+}

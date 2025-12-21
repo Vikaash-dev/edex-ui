@@ -1,21 +1,25 @@
+const pdfjsLib = require("pdfjs-dist");
 class DocReader {
     constructor(opts) {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = './node_modules/pdfjs-dist/build/pdf.worker.js';
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "./node_modules/pdfjs-dist/build/pdf.worker.js";
         const modalElementId = "modal_" + opts.modalId;
         const path = opts.path;
         const scale = 1;
-        const canvas = document.getElementById(modalElementId).querySelector(".pdf_canvas");
-        const context = canvas.getContext('2d');
+        const canvas = document
+            .getElementById(modalElementId)
+            .querySelector(".pdf_canvas");
+        const context = canvas.getContext("2d");
         const loadingTask = pdfjsLib.getDocument(path);
         let pdfDoc = null,
             pageNum = 1,
             pageRendering = false,
             pageNumPending = null,
-            zoom = 100
+            zoom = 100;
 
         this.renderPage = (num) => {
             pageRendering = true;
-            loadingTask.promise.then(function (pdf) {
+            loadingTask.promise.then(function (_pdf) {
                 pdfDoc.getPage(num).then(function (page) {
                     const viewport = page.getViewport({ scale: scale });
                     canvas.height = viewport.height;
@@ -23,20 +27,22 @@ class DocReader {
 
                     const renderContext = {
                         canvasContext: context,
-                        viewport: viewport,
+                        viewport: viewport
                     };
                     const renderTask = page.render(renderContext);
-                    renderTask.promise.then(function () {
+                    renderTask.promise.then(() => {
                         pageRendering = false;
                         if (pageNumPending !== null) {
-                            renderPage(pageNumPending);
+                            this.renderPage(pageNumPending);
                             pageNumPending = null;
                         }
                     });
                 });
             });
-            document.getElementById(modalElementId).querySelector(".page_num").textContent = num;
-        }
+            document
+                .getElementById(modalElementId)
+                .querySelector(".page_num").textContent = num;
+        };
 
         this.queueRenderPage = (num) => {
             if (pageRendering) {
@@ -44,7 +50,7 @@ class DocReader {
             } else {
                 this.renderPage(num);
             }
-        }
+        };
 
         this.onPrevPage = () => {
             if (pageNum <= 1) {
@@ -52,7 +58,7 @@ class DocReader {
             }
             pageNum--;
             this.queueRenderPage(pageNum);
-        }
+        };
 
         this.onNextPage = () => {
             if (pageNum >= pdfDoc.numPages) {
@@ -60,7 +66,7 @@ class DocReader {
             }
             pageNum++;
             this.queueRenderPage(pageNum);
-        }
+        };
 
         this.zoomIn = () => {
             if (zoom >= 200) {
@@ -68,7 +74,7 @@ class DocReader {
             }
             zoom = zoom + 10;
             canvas.style.zoom = zoom + "%";
-        }
+        };
 
         this.zoomOut = () => {
             if (zoom <= 50) {
@@ -76,16 +82,30 @@ class DocReader {
             }
             zoom = zoom - 10;
             canvas.style.zoom = zoom + "%";
-        }
+        };
 
-        document.getElementById(modalElementId).querySelector(".previous_page").addEventListener('click', this.onPrevPage);
-        document.getElementById(modalElementId).querySelector(".next_page").addEventListener('click', this.onNextPage);
-        document.getElementById(modalElementId).querySelector(".zoom_in").addEventListener('click', this.zoomIn);
-        document.getElementById(modalElementId).querySelector(".zoom_out").addEventListener('click', this.zoomOut);
+        document
+            .getElementById(modalElementId)
+            .querySelector(".previous_page")
+            .addEventListener("click", this.onPrevPage);
+        document
+            .getElementById(modalElementId)
+            .querySelector(".next_page")
+            .addEventListener("click", this.onNextPage);
+        document
+            .getElementById(modalElementId)
+            .querySelector(".zoom_in")
+            .addEventListener("click", this.zoomIn);
+        document
+            .getElementById(modalElementId)
+            .querySelector(".zoom_out")
+            .addEventListener("click", this.zoomOut);
 
         pdfjsLib.getDocument(path).promise.then((pdfDoc_) => {
             pdfDoc = pdfDoc_;
-            document.getElementById(modalElementId).querySelector(".page_count").textContent = pdfDoc.numPages;
+            document
+                .getElementById(modalElementId)
+                .querySelector(".page_count").textContent = pdfDoc.numPages;
             this.renderPage(pageNum);
         });
     }
