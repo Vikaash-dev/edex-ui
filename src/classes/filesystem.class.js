@@ -618,10 +618,10 @@ class FilesystemDisplay {
                             new Modal(
                                 {
                                     type: "custom",
-                                    title: _escapeHtml(name),
-                                    html: `<textarea id="fileEdit" rows="40" cols="150" spellcheck="false">${data}</textarea><p id="fedit-status"></p>`,
+                                    title: window._escapeHtml(name),
+                                    html: `<textarea id="fileEdit" rows="40" cols="150" spellcheck="false">${window._escapeHtml(data)}</textarea><p id="fedit-status"></p>`,
                                     buttons: [
-                                        {label:"Save to Disk",action:`window.writeFile('${block.path}')`}
+                                        {label:"Save to Disk",action:`window.writeFile('${block.path.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;")}')`}
                                     ]
                                 }, () => {
                                     window.keyboard.attach();
