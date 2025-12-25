@@ -621,7 +621,8 @@ class FilesystemDisplay {
                                     title: _escapeHtml(name),
                                     html: `<textarea id="fileEdit" rows="40" cols="150" spellcheck="false">${data}</textarea><p id="fedit-status"></p>`,
                                     buttons: [
-                                        {label:"Save to Disk",action:`window.writeFile('${block.path}')`}
+                                        // Escaping path to prevent XSS/Attribute Injection
+                                        {label:"Save to Disk",action:`window.writeFile('${block.path.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;")}')`}
                                     ]
                                 }, () => {
                                     window.keyboard.attach();

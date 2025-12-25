@@ -1,0 +1,4 @@
+## 2025-10-24 - Critical RCE via Attribute Injection in Electron
+**Vulnerability:** Found a critical Remote Code Execution (RCE) vulnerability in `filesystem.class.js` where user-controlled file paths were injected into an HTML `onclick` attribute without escaping. This allowed breaking out of the JavaScript string and executing arbitrary code.
+**Learning:** In Electron apps with `nodeIntegration: true`, any XSS is immediately an RCE. `window._escapeHtml` is insufficient for escaping data used inside JavaScript string literals within HTML attributes; specific escaping for backslashes, single quotes, and double quotes is required.
+**Prevention:** Avoid constructing event handlers via string concatenation in `innerHTML`. Use `addEventListener` where possible, or ensure rigorous escaping of `\` (backslash), `'` (single quote), and `"` (double quote) for any data interpolated into inline event handlers.
