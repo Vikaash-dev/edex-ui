@@ -13,6 +13,9 @@ window._escapeHtml = text => {
     };
     return text.replace(/[&<>"']/g, m => {return map[m];});
 };
+window._escapeStringForJS = text => {
+    return text.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, '\\"');
+};
 window._encodePathURI = uri => {
     return encodeURI(uri).replace(/#/g, "%23");
 };
