@@ -53,7 +53,7 @@ class Modal {
             ${this.type === "custom" ? options.html : "<h5>"+this.message+"</h5>"}
             <div>`;
             buttons.forEach(b => {
-                DOMstring += `<button onclick="${b.action}">${b.label}</button>`;
+                DOMstring += `<button onclick="${window._escapeHtml(b.action)}">${b.label}</button>`;
             });
         DOMstring += `</div>
         </div>`;
