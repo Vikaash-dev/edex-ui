@@ -191,6 +191,7 @@ class FilesystemDisplay {
 
                     let e = {
                         name: window._escapeHtml(file),
+                        rawName: file,
                         path: path.resolve(tcwd, file),
                         type: "other",
                         category: "other",
@@ -367,10 +368,12 @@ class FilesystemDisplay {
                 }
 
                 if (e.type === "edex-theme") {
-                    cmd = `window.themeChanger("${e.name.slice(0, -5)}")`;
+                    const safeName = window._escapeHtml(window._escapeStringForJS(e.rawName.slice(0, -5)));
+                    cmd = `window.themeChanger("${safeName}")`;
                 }
                 if (e.type === "edex-kblayout") {
-                    cmd = `window.remakeKeyboard("${e.name.slice(0, -5)}")`;
+                    const safeName = window._escapeHtml(window._escapeStringForJS(e.rawName.slice(0, -5)));
+                    cmd = `window.remakeKeyboard("${safeName}")`;
                 }
                 if (e.type === "edex-settings") {
                     cmd = `window.openSettings()`;
