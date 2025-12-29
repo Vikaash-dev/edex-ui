@@ -13,6 +13,16 @@ window._escapeHtml = text => {
     };
     return text.replace(/[&<>"']/g, m => {return map[m];});
 };
+window._escapeStringForJS = str => {
+    if (!str) return "";
+    return str.replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"')
+        .replace(/'/g, "\\'")
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r")
+        .replace(/\u2028/g, "\\u2028")
+        .replace(/\u2029/g, "\\u2029");
+};
 window._encodePathURI = uri => {
     return encodeURI(uri).replace(/#/g, "%23");
 };
