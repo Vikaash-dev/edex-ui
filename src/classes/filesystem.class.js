@@ -191,6 +191,7 @@ class FilesystemDisplay {
 
                     let e = {
                         name: window._escapeHtml(file),
+                        rawName: file,
                         path: path.resolve(tcwd, file),
                         type: "other",
                         category: "other",
@@ -367,10 +368,10 @@ class FilesystemDisplay {
                 }
 
                 if (e.type === "edex-theme") {
-                    cmd = `window.themeChanger("${e.name.slice(0, -5)}")`;
+                    cmd = `window.themeChanger("${window._escapeStringForJS(e.rawName.slice(0, -5))}")`;
                 }
                 if (e.type === "edex-kblayout") {
-                    cmd = `window.remakeKeyboard("${e.name.slice(0, -5)}")`;
+                    cmd = `window.remakeKeyboard("${window._escapeStringForJS(e.rawName.slice(0, -5))}")`;
                 }
                 if (e.type === "edex-settings") {
                     cmd = `window.openSettings()`;
@@ -466,7 +467,7 @@ class FilesystemDisplay {
                     e.lastAccessed = "--";
                 }
 
-                filesDOM += `<div class="fs_disp_${e.type}${hidden} animationWait" onclick='${cmdPrefix+cmd+cmdSuffix}'>
+                filesDOM += `<div class="fs_disp_${e.type}${hidden} animationWait" onclick='${window._escapeHtml(cmdPrefix+cmd+cmdSuffix)}'>
                                 <svg viewBox="0 0 ${icon.width} ${icon.height}" fill="${this.iconcolor}">
                                     ${icon.svg}
                                 </svg>
@@ -621,7 +622,7 @@ class FilesystemDisplay {
                                     title: _escapeHtml(name),
                                     html: `<textarea id="fileEdit" rows="40" cols="150" spellcheck="false">${data}</textarea><p id="fedit-status"></p>`,
                                     buttons: [
-                                        {label:"Save to Disk",action:`window.writeFile('${block.path}')`}
+                                        {label:"Save to Disk",action:window._escapeHtml(`window.writeFile('${window._escapeStringForJS(block.path)}')`)}
                                     ]
                                 }, () => {
                                     window.keyboard.attach();
