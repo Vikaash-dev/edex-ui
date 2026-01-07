@@ -1,0 +1,4 @@
+## 2025-10-24 - Dynamic onclick Injection in Electron
+**Vulnerability:** Found a Code Injection (RCE) vulnerability in `FilesystemDisplay` where `e.path` was insecurely concatenated into an `onclick` handler string using only `replace(/\\/g, '')`. This allowed malicious filenames to break out of the JS string and execute arbitrary code.
+**Learning:** In Electron apps with `nodeIntegration: true`, any XSS or JS injection is effectively RCE. String concatenation for event handlers is extremely risky.
+**Prevention:** Use dedicated helper functions like `_escapeStringForJS` to safely escape `"` and `\` when constructing JS strings dynamically. Prefer `addEventListener` over inline `onclick` attributes where possible, though `onclick` string generation is deeply embedded in this legacy codebase.
