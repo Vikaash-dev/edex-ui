@@ -1,0 +1,4 @@
+## 2025-10-24 - XSS in FilesystemDisplay
+**Vulnerability:** XSS/Command Injection in `FilesystemDisplay` class via dynamic `onclick` handler construction. File paths/names were injected into JavaScript strings within HTML attributes without proper escaping for the JS context (only HTML escaping was present).
+**Learning:** `_escapeHtml` is insufficient for values placed inside JavaScript strings within HTML attributes. The browser decodes HTML entities *before* parsing the JavaScript, so `&quot;` becomes `"` and breaks the string literal.
+**Prevention:** Always escape for the JavaScript string context (e.g. `\` escape quotes) *before* placing the value into the HTML attribute. Use `window._escapeStringForJS` for this purpose. Also, prefer `addEventListener` over dynamic `onclick` strings where possible to avoid this class of bugs entirely.
