@@ -1,0 +1,4 @@
+## 2024-05-22 - SystemInformation Command Injection Remediation
+**Vulnerability:** `systeminformation` version 5.9.7 contains CVE-2023-42810, a critical command injection vulnerability.
+**Learning:** The application proxies `systeminformation` calls from the renderer process via IPC. Since the application runs with `nodeIntegration: true`, this specific vulnerability is less of a privilege escalation and more of a widening of the attack surface. However, it highlights the risk of exposing powerful backend libraries directly to the frontend, especially when those libraries have known RCE flaws.
+**Prevention:** Regularly run `npm audit` to identify and update vulnerable dependencies. Ensure that backend proxies validate inputs rigorously before passing them to sensitive libraries, even if those libraries are trusted.
