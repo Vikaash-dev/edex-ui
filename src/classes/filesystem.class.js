@@ -277,7 +277,7 @@ class FilesystemDisplay {
                     }
 
                     devices.push({
-                        name: (block.label !== "") ? `${block.label} (${block.name})` : `${block.mount} (${block.name})`,
+                        name: window._escapeHtml((block.label !== "") ? `${block.label} (${block.name})` : `${block.mount} (${block.name})`),
                         type,
                         path: block.mount
                     });
@@ -320,16 +320,22 @@ class FilesystemDisplay {
 
                 let cmd;
 
+                // Secure path for JS injection
+                const safePath = window._escapeStringForJS(e.path);
+                // Note: e.name is already HTML escaped, but we need to use fsDisp.cwd[i].name for some ops
+                // which refers to the object in memory, not the HTML string.
+
                 if (!this._noTracking) {
                     if (e.type === "dir" || e.type.endsWith("Dir")) {
+                        // Use index access which is safer
                         cmd = `window.term[window.currentTerm].writelr("cd \\""+fsDisp.cwd[${blockIndex}].name+"\\"")`;
                     } else if (e.type === "up") {
                         cmd = `window.term[window.currentTerm].writelr("cd ..")`;
                     } else if (e.type === "disk" || e.type === "rom" || e.type === "usb") {
                         if (process.platform === "win32") {
-                            cmd = `window.term[window.currentTerm].writelr("${e.path.replace(/\\/g, '')}")`;
+                            cmd = `window.term[window.currentTerm].writelr("${safePath.replace(/\\\\/g, '')}")`;
                         } else {
-                            cmd = `window.term[window.currentTerm].writelr("cd \\"${e.path.replace(/\\/g, '')}\\"")`;
+                            cmd = `window.term[window.currentTerm].writelr("cd \\"${safePath.replace(/\\\\/g, '')}\\"")`;
                         }
                     } else {
                         cmd = `window.term[window.currentTerm].write("\\""+fsDisp.cwd[${blockIndex}].path+"\\"")`;
@@ -340,7 +346,7 @@ class FilesystemDisplay {
                     } else if (e.type === "up") {
                         cmd = `window.fsDisp.readFS(path.resolve(window.fsDisp.dirpath, ".."))`;
                     } else if (e.type === "disk" || e.type === "rom" || e.type === "usb") {
-                        cmd = `window.fsDisp.readFS("${e.path.replace(/\\/g, '')}")`;
+                        cmd = `window.fsDisp.readFS("${safePath.replace(/\\\\/g, '')}")`;
                     } else {
                         cmd = `window.term[window.currentTerm].write("\\""+fsDisp.cwd[${blockIndex}].path+"\\"")`;
                     }
@@ -378,6 +384,10 @@ class FilesystemDisplay {
                 if (e.type === "edex-shortcuts") {
                     cmd = `window.openShortcutsHelp()`;
                 }
+
+                let fullCmd = cmdPrefix + cmd + cmdSuffix;
+                // Escape the full command for HTML attribute context (single quotes)
+                fullCmd = window._escapeHtml(fullCmd);
 
                 let icon = "";
                 let type = "";
@@ -466,7 +476,7 @@ class FilesystemDisplay {
                     e.lastAccessed = "--";
                 }
 
-                filesDOM += `<div class="fs_disp_${e.type}${hidden} animationWait" onclick='${cmdPrefix+cmd+cmdSuffix}'>
+                filesDOM += `<div class="fs_disp_${e.type}${hidden} animationWait" onclick='${fullCmd}'>
                                 <svg viewBox="0 0 ${icon.width} ${icon.height}" fill="${this.iconcolor}">
                                     ${icon.svg}
                                 </svg>
