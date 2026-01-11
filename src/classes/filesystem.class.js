@@ -284,7 +284,11 @@ class FilesystemDisplay {
                 }
             });
 
-            this.render(devices, true);
+            // Update local CWD tracking so that render() can use safe index lookups
+            // This fixes both a functionality bug (Ctrl/Shift-click using wrong items)
+            // and a security vulnerability (XSS via malicious mount points)
+            this.cwd = devices;
+            this.render(this.cwd, true);
         };
 
         this.render = async (originBlockList, isDiskView) => {
@@ -327,9 +331,10 @@ class FilesystemDisplay {
                         cmd = `window.term[window.currentTerm].writelr("cd ..")`;
                     } else if (e.type === "disk" || e.type === "rom" || e.type === "usb") {
                         if (process.platform === "win32") {
-                            cmd = `window.term[window.currentTerm].writelr("${e.path.replace(/\\/g, '')}")`;
+                            cmd = `window.term[window.currentTerm].writelr(window.fsDisp.cwd[${blockIndex}].path.replace(/\\\\/g, ''))`;
                         } else {
-                            cmd = `window.term[window.currentTerm].writelr("cd \\"${e.path.replace(/\\/g, '')}\\"")`;
+                            // Use index access to avoid injecting user-controlled strings into JS code
+                            cmd = `window.term[window.currentTerm].writelr("cd \\""+window.fsDisp.cwd[${blockIndex}].path.replace(/\\\\/g, '')+"\\"")`;
                         }
                     } else {
                         cmd = `window.term[window.currentTerm].write("\\""+fsDisp.cwd[${blockIndex}].path+"\\"")`;
@@ -340,7 +345,8 @@ class FilesystemDisplay {
                     } else if (e.type === "up") {
                         cmd = `window.fsDisp.readFS(path.resolve(window.fsDisp.dirpath, ".."))`;
                     } else if (e.type === "disk" || e.type === "rom" || e.type === "usb") {
-                        cmd = `window.fsDisp.readFS("${e.path.replace(/\\/g, '')}")`;
+                        // Use index access to avoid injecting user-controlled strings into JS code
+                        cmd = `window.fsDisp.readFS(window.fsDisp.cwd[${blockIndex}].path.replace(/\\\\/g, ''))`;
                     } else {
                         cmd = `window.term[window.currentTerm].write("\\""+fsDisp.cwd[${blockIndex}].path+"\\"")`;
                     }
