@@ -284,6 +284,7 @@ class FilesystemDisplay {
                 }
             });
 
+            this.cwd = devices;
             this.render(devices, true);
         };
 
