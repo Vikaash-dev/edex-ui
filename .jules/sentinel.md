@@ -1,0 +1,4 @@
+## 2026-01-12 - Index Mismatch Vulnerability in FilesystemDisplay
+**Vulnerability:** A logic error in `readDevices` method of `FilesystemDisplay` class caused `this.cwd` (the current working directory data) to not be updated when switching to disk view.
+**Learning:** The UI rendering logic (`render` method) relies on index-based lookups (`window.fsDisp.cwd[blockIndex]`) to generate `onclick` handlers. When the visual list (disks) did not match the underlying data (files from previous directory), clicking a disk item would execute actions on the file at the corresponding index. This could lead to opening/executing unintended files.
+**Prevention:** Ensure that the data model (`this.cwd`) is always synchronized with the view data passed to the render function. When decoupling view data from model data (e.g. via cloning), verify that dependent generated code (like `onclick` handlers referencing global state) still points to the correct data.
