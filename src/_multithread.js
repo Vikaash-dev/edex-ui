@@ -42,9 +42,25 @@ if (cluster.isMaster) {
     }
 
     var queue = {};
+    const ALLOWED_METHODS = [
+        "processes",
+        "mem",
+        "battery",
+        "networkConnections",
+        "blockDevices",
+        "fsSize",
+        "system",
+        "chassis",
+        "networkInterfaces",
+        "networkStats",
+        "cpu",
+        "currentLoad",
+        "cpuTemperature"
+    ];
+
     ipc.on("systeminformation-call", (e, type, id, ...args) => {
-        if (!si[type]) {
-            signale.warn("Illegal request for systeminformation");
+        if (!si[type] || !ALLOWED_METHODS.includes(type)) {
+            signale.warn("Illegal or unauthorized request for systeminformation: " + type);
             return;
         }
 
