@@ -1,0 +1,4 @@
+## 2025-10-24 - Stored XSS via Device Mount Points
+**Vulnerability:** In `FilesystemDisplay.readDevices`, device mount paths were directly interpolated into HTML `onclick` attributes. A malicious mount point (e.g., a USB drive labeled `usb' onclick='alert(1)`) could break out of the attribute string and execute arbitrary JavaScript.
+**Learning:** In applications with `nodeIntegration: true`, stored XSS is effectively Remote Code Execution. Direct string interpolation into HTML attributes is dangerous even if the source seems trusted (like system hardware info), as external hardware labels can be manipulated.
+**Prevention:** Avoid constructing event handlers as strings. Use `addEventListener` where possible, or if generating HTML strings is necessary, pass data via an index or ID look-up (e.g., `fsDisp.cwd[i]`) instead of embedding the data directly in the code string. Ensure the data array is synchronized with the rendered view.
