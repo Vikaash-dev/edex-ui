@@ -386,7 +386,7 @@ async function initUI() {
 
     getDisplayName().then(user => {
         if (user) {
-            greeter.innerHTML += `Welcome back, <em>${user}</em>`;
+            greeter.innerHTML += `Welcome back, <em>${window._escapeHtml(user)}</em>`;
         } else {
             greeter.innerHTML += "Welcome back";
         }
@@ -590,25 +590,25 @@ window.openSettings = async () => {
     if (document.getElementById("settingsEditor")) return;
 
     // Build lists of available keyboards, themes, monitors
-    let keyboards, themes, monitors, ifaces;
+    let keyboards = "", themes = "", monitors = "", ifaces = "";
     fs.readdirSync(keyboardsDir).forEach(kb => {
         if (!kb.endsWith(".json")) return;
         kb = kb.replace(".json", "");
         if (kb === window.settings.keyboard) return;
-        keyboards += `<option>${kb}</option>`;
+        keyboards += `<option>${window._escapeHtml(kb)}</option>`;
     });
     fs.readdirSync(themesDir).forEach(th => {
         if (!th.endsWith(".json")) return;
         th = th.replace(".json", "");
         if (th === window.settings.theme) return;
-        themes += `<option>${th}</option>`;
+        themes += `<option>${window._escapeHtml(th)}</option>`;
     });
     for (let i = 0; i < electron.remote.screen.getAllDisplays().length; i++) {
         if (i !== window.settings.monitor) monitors += `<option>${i}</option>`;
     }
     let nets = await window.si.networkInterfaces();
     nets.forEach(net => {
-        if (net.iface !== window.mods.netstat.iface) ifaces += `<option>${net.iface}</option>`;
+        if (net.iface !== window.mods.netstat.iface) ifaces += `<option>${window._escapeHtml(net.iface)}</option>`;
     });
 
     // Unlink the tactile keyboard from the terminal emulator to allow filling in the settings fields
@@ -626,33 +626,33 @@ window.openSettings = async () => {
                     <tr>
                         <td>shell</td>
                         <td>The program to run as a terminal emulator</td>
-                        <td><input type="text" id="settingsEditor-shell" value="${window.settings.shell}"></td>
+                        <td><input type="text" id="settingsEditor-shell" value="${window._escapeHtml(window.settings.shell)}"></td>
                     </tr>
                     <tr>
                         <td>shellArgs</td>
                         <td>Arguments to pass to the shell</td>
-                        <td><input type="text" id="settingsEditor-shellArgs" value="${window.settings.shellArgs || ''}"></td>
+                        <td><input type="text" id="settingsEditor-shellArgs" value="${window._escapeHtml(window.settings.shellArgs || '')}"></td>
                     </tr>
                     <tr>
                         <td>cwd</td>
                         <td>Working Directory to start in</td>
-                        <td><input type="text" id="settingsEditor-cwd" value="${window.settings.cwd}"></td>
+                        <td><input type="text" id="settingsEditor-cwd" value="${window._escapeHtml(window.settings.cwd)}"></td>
                     </tr>
                     <tr>
                         <td>env</td>
                         <td>Custom shell environment override</td>
-                        <td><input type="text" id="settingsEditor-env" value="${window.settings.env}"></td>
+                        <td><input type="text" id="settingsEditor-env" value="${window._escapeHtml(String(window.settings.env))}"></td>
                     </tr>
                     <tr>
                         <td>username</td>
                         <td>Custom username to display at boot</td>
-                        <td><input type="text" id="settingsEditor-username" value="${window.settings.username}"></td>
+                        <td><input type="text" id="settingsEditor-username" value="${window._escapeHtml(window.settings.username)}"></td>
                     </tr>
                     <tr>
                         <td>keyboard</td>
                         <td>On-screen keyboard layout code</td>
                         <td><select id="settingsEditor-keyboard">
-                            <option>${window.settings.keyboard}</option>
+                            <option>${window._escapeHtml(window.settings.keyboard)}</option>
                             ${keyboards}
                         </select></td>
                     </tr>
@@ -660,7 +660,7 @@ window.openSettings = async () => {
                         <td>theme</td>
                         <td>Name of the theme to load</td>
                         <td><select id="settingsEditor-theme">
-                            <option>${window.settings.theme}</option>
+                            <option>${window._escapeHtml(window.settings.theme)}</option>
                             ${themes}
                         </select></td>
                     </tr>
@@ -698,7 +698,7 @@ window.openSettings = async () => {
                     <tr>
                         <td>pingAddr</td>
                         <td>IPv4 address to test Internet connectivity</td>
-                        <td><input type="text" id="settingsEditor-pingAddr" value="${window.settings.pingAddr || "1.1.1.1"}"></td>
+                        <td><input type="text" id="settingsEditor-pingAddr" value="${window._escapeHtml(window.settings.pingAddr || "1.1.1.1")}"></td>
                     </tr>
                     <tr>
                         <td>clockHours</td>
@@ -895,7 +895,7 @@ window.openShortcutsHelp = () => {
 
         appList += `<tr>
                         <td>${(cut.enabled) ? 'YES' : 'NO'}</td>
-                        <td><input disabled type="text" maxlength=25 value="${cut.trigger}"></td>
+                        <td><input disabled type="text" maxlength=25 value="${window._escapeHtml(cut.trigger)}"></td>
                         <td>${shortcutsDefinition[action]}</td>
                     </tr>`;
     });
@@ -904,9 +904,9 @@ window.openShortcutsHelp = () => {
     window.shortcuts.filter(e => e.type === "shell").forEach(cut => {
         customList += `<tr>
                             <td>${(cut.enabled) ? 'YES' : 'NO'}</td>
-                            <td><input disabled type="text" maxlength=25 value="${cut.trigger}"></td>
+                            <td><input disabled type="text" maxlength=25 value="${window._escapeHtml(cut.trigger)}"></td>
                             <td>
-                                <input disabled type="text" placeholder="Run terminal command..." value="${cut.action}">
+                                <input disabled type="text" placeholder="Run terminal command..." value="${window._escapeHtml(cut.action)}">
                                 <input disabled type="checkbox" name="shortcutsHelpNew_Enter" ${(cut.linebreak) ? 'checked' : ''}>
                                 <label for="shortcutsHelpNew_Enter">Enter</label>
                             </td>
